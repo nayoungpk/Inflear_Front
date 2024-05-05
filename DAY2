@@ -1,1 +1,180 @@
+##App.js
+import React, { useState } from 'react';
+import './App.css';
 
+function App() {
+  const [selectedCategory, setSelectedCategory] = useState('all');
+
+  const restaurants = [
+    {
+      name: "미도인 위례",
+      cuisine: "상",
+      location: "장지동 896",
+      rating: 4.5,
+      image: "/images/1.jpg"
+    },
+    {
+      name: "송리단취향",
+      cuisine: "중",
+      location: "송파동 53-10A",
+      rating: 4.8,
+      image: "/images/2.jpg"
+    },
+    {
+      name: "준호네 부대찌개",
+      cuisine: "상",
+      location: "태평동 5113-7",
+      rating: 4.3,
+      image: "/images/3.jpg"
+    },
+    {
+      name: "미곡 반상",
+      cuisine: "중",
+      location: "이천시",
+      rating: 4.3,
+      image: "/images/4.jpg"
+    },
+    {
+      name: "이천 막국수",
+      cuisine: "상",
+      location: "이천시",
+      rating: 4.3,
+      image: "/images/5.jpg"
+    },
+    {
+      name: "백소정",
+      cuisine: "하",
+      location: "야당동",
+      rating: 4.3,
+      image: "/images/6.jpg"
+    },
+    {
+      name: "포근",
+      cuisine: "하",
+      location: "야당동",
+      rating: 4.3,
+      image: "/images/7.jpg"
+    },
+    {
+      name: "브런치빈",
+      cuisine: "중",
+      location: "야당동",
+      rating: 4.3,
+      image: "/images/8.jpg"
+    },
+  ];
+
+  const filteredRestaurants = selectedCategory === 'all' ? restaurants : restaurants.filter(restaurant => restaurant.cuisine === selectedCategory);
+
+  return (
+    <div className="App">
+      <header className="App-header">
+        <h2>" Introducing Various Restaurants "</h2>
+        <div className="buttons">
+          <button className="button" onClick={() => setSelectedCategory('all')}>전체</button>
+          <button className="button" onClick={() => setSelectedCategory('상')}>상</button>
+          <button className="button" onClick={() => setSelectedCategory('중')}>중</button>
+          <button className="button" onClick={() => setSelectedCategory('하')}>하</button>
+        </div>
+        <div className="restaurant-list">
+          {filteredRestaurants.map((restaurant, index) => (
+            <div key={index} className="restaurant">
+              <img src={restaurant.image} alt={restaurant.name} />
+              <div className="restaurant-info">
+                <h2>{restaurant.name}</h2>
+                <img src="/images/minus.png" alt="Food Icon" width="20" height="20" />
+                <p><strong>음식 종류:</strong> {restaurant.cuisine}</p>
+                <p><strong>위치:</strong> {restaurant.location}</p>
+                <p><strong>평점:</strong> {restaurant.rating}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </header>
+    </div>
+  );
+}
+
+export default App;
+
+
+##App.css
+@font-face {
+  font-family: 'TAEBAEKmilkyway';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302@1.0/TAEBAEKmilkyway.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  font-family: 'TAEBAEKmilkyway', sans-serif; /* 적용할 글꼴 선택 */
+}
+
+.App {
+  text-align: center;
+}
+
+.App-header {
+  background-color: #ffffff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: rgb(0, 0, 0);
+}
+
+.buttons {
+  margin-bottom: 20px;
+}
+
+.button {
+  margin: 0 10px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: rgba(221, 176, 229, 1);
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button:hover {
+  background-color: rgba(191, 101, 207, 1);
+}
+
+.button:focus {
+  outline: none;
+}
+
+.restaurant-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.restaurant {
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.restaurant img {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.restaurant-info {
+  margin-top: 10px;
+}
+
+.restaurant-info h2 {
+  margin-bottom: 5px;
+}
+
+.restaurant-info p {
+  margin: 5px 0;
+}
