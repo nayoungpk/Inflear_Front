@@ -1,0 +1,141 @@
+import React, { useState, useEffect } from 'react';
+import './App.css';
+
+const App = () => {
+  const [question, setQuestion] = useState('');
+  const [choices, setChoices] = useState([]);
+  const [correctAnswer, setCorrectAnswer] = useState('');
+  const [userAnswer, setUserAnswer] = useState('');
+  const [isAnswered, setIsAnswered] = useState(false);
+  const [isCorrect, setIsCorrect] = useState(false);
+
+  useEffect(() => {
+    generateQuestion();
+  }, []);
+
+  const generateQuestion = () => {
+    const num1 = Math.floor(Math.random() * 10) + 1;
+    const num2 = Math.floor(Math.random() * 10) + 1;
+    const operation = Math.random() < 0.5 ? '+' : '-';
+    const result = operation === '+' ? num1 + num2 : num1 - num2;
+    const wrongChoices = generateWrongChoices(result);
+
+    setQuestion(`${num1} ${operation} ${num2}`);
+    setCorrectAnswer(result.toString());
+    setChoices(shuffleArray([...wrongChoices, result.toString()]));
+    setUserAnswer('');
+    setIsAnswered(false);
+    setIsCorrect(false);
+  };
+
+  const generateWrongChoices = (correctAnswer) => {
+    const choices = [];
+    while (choices.length < 3) {
+      const wrongChoice = Math.floor(Math.random() * 20) + 1;
+      if (wrongChoice.toString() !== correctAnswer && !choices.includes(wrongChoice.toString())) {
+        choices.push(wrongChoice.toString());
+      }
+    }
+    return choices;
+  };
+
+  const shuffleArray = (array) => {
+    return array.sort(() => Math.random() - 0.5);
+  };
+
+  const handleAnswer = (choice) => {
+    setUserAnswer(choice);
+    setIsAnswered(true);
+    setIsCorrect(choice === correctAnswer);
+  };
+
+  return (
+    <div className="Quiz">
+      <h1>수학 퀴즈</h1>
+      <div className="Question">
+        <p>{question}</p>
+      </div>
+      <div className="Choices">
+        {choices.map((choice, index) => (
+          <button key={index} disabled={isAnswered} onClick={() => handleAnswer(choice)}>
+            {choice}
+          </button>
+        ))}
+      </div>
+      {isAnswered && (
+        <div className="Result">
+          {isCorrect ? <p>정답입니다!</p> : <p>틀렸습니다. 정답은 {correctAnswer}입니다.</p>}
+          <button onClick={generateQuestion}>다음 문제</button>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default App;
+
+
+@font-face {
+  font-family: 'TAEBAEKmilkyway';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302@1.0/TAEBAEKmilkyway.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}  
+
+body {
+  font-family: Arial, sans-serif;
+  font-family: 'TAEBAEKmilkyway', sans-serif; /* 적용할 글꼴 선택 */
+  text-align: center;
+}
+
+.App {
+  text-align: center;
+  padding: 20px;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  margin-top: 0;
+}
+
+.Question {
+  margin-bottom: 20px;
+}
+
+.Choices {
+  display: flex;
+  justify-content: center;
+}
+
+button {
+  margin: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+.Result {
+  margin-top: 20px;
+}
+
+.Result p {
+  margin: 10px 0;
+  font-weight: bold;
+}
